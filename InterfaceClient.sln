@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfaceClient", "InterfaceClient\InterfaceClient.csproj", "{679A37EA-8292-479B-8488-0B37BFAFD191}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device", "Device\Device.csproj", "{2E910293-683E-4513-BCF8-51E40D2B3068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlUtils", "XmlUtils\XmlUtils.csproj", "{97F9CC90-F7CE-4C54-8AAB-A3DD820385DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{679A37EA-8292-479B-8488-0B37BFAFD191}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{679A37EA-8292-479B-8488-0B37BFAFD191}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{679A37EA-8292-479B-8488-0B37BFAFD191}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{679A37EA-8292-479B-8488-0B37BFAFD191}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E910293-683E-4513-BCF8-51E40D2B3068}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{2E910293-683E-4513-BCF8-51E40D2B3068}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{2E910293-683E-4513-BCF8-51E40D2B3068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E910293-683E-4513-BCF8-51E40D2B3068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97F9CC90-F7CE-4C54-8AAB-A3DD820385DA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{97F9CC90-F7CE-4C54-8AAB-A3DD820385DA}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{97F9CC90-F7CE-4C54-8AAB-A3DD820385DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97F9CC90-F7CE-4C54-8AAB-A3DD820385DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
