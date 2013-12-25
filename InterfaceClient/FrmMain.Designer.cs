@@ -42,31 +42,36 @@
             this.txtIp = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnTestEncoder = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
-            this.btnMin = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelEncoder = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelNetwrok = new System.Windows.Forms.ToolStripStatusLabel();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.txtCardStatus = new System.Windows.Forms.TextBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtStatus = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonTestEncoder = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonReset = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonAbout = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonExit = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(33, 138);
+            this.pictureBox1.Location = new System.Drawing.Point(406, 86);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(205, 131);
+            this.pictureBox1.Size = new System.Drawing.Size(269, 140);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -75,10 +80,9 @@
             this.groupBox1.Controls.Add(this.txtKeyCoderName);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.pictureBox1);
-            this.groupBox1.Location = new System.Drawing.Point(46, 41);
+            this.groupBox1.Location = new System.Drawing.Point(75, 86);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(255, 298);
+            this.groupBox1.Size = new System.Drawing.Size(269, 140);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Key Coder";
@@ -116,9 +120,9 @@
             this.groupBox2.Controls.Add(this.txtIp);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(334, 41);
+            this.groupBox2.Location = new System.Drawing.Point(75, 258);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(269, 167);
+            this.groupBox2.Size = new System.Drawing.Size(269, 158);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "ORBITA Server";
@@ -126,7 +130,7 @@
             // btmTestLink
             // 
             this.btmTestLink.Image = ((System.Drawing.Image)(resources.GetObject("btmTestLink.Image")));
-            this.btmTestLink.Location = new System.Drawing.Point(180, 127);
+            this.btmTestLink.Location = new System.Drawing.Point(186, 127);
             this.btmTestLink.Name = "btmTestLink";
             this.btmTestLink.Size = new System.Drawing.Size(83, 30);
             this.btmTestLink.TabIndex = 2;
@@ -147,7 +151,7 @@
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(71, 101);
+            this.txtPort.Location = new System.Drawing.Point(71, 97);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(141, 20);
             this.txtPort.TabIndex = 1;
@@ -162,7 +166,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(31, 105);
+            this.label4.Location = new System.Drawing.Point(31, 101);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 13);
             this.label4.TabIndex = 1;
@@ -177,66 +181,14 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "IP :";
             // 
-            // btnSave
-            // 
-            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
-            this.btnSave.Location = new System.Drawing.Point(360, 239);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(104, 30);
-            this.btnSave.TabIndex = 2;
-            this.btnSave.Text = "Save";
-            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnTestEncoder
-            // 
-            this.btnTestEncoder.Image = ((System.Drawing.Image)(resources.GetObject("btnTestEncoder.Image")));
-            this.btnTestEncoder.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnTestEncoder.Location = new System.Drawing.Point(360, 282);
-            this.btnTestEncoder.Name = "btnTestEncoder";
-            this.btnTestEncoder.Size = new System.Drawing.Size(104, 30);
-            this.btnTestEncoder.TabIndex = 4;
-            this.btnTestEncoder.Text = "Test encoder";
-            this.btnTestEncoder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestEncoder.UseVisualStyleBackColor = true;
-            this.btnTestEncoder.Click += new System.EventHandler(this.btnTestEncoder_Click);
-            // 
-            // btnReset
-            // 
-            this.btnReset.Image = ((System.Drawing.Image)(resources.GetObject("btnReset.Image")));
-            this.btnReset.Location = new System.Drawing.Point(472, 239);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(104, 30);
-            this.btnReset.TabIndex = 3;
-            this.btnReset.Text = "Reset";
-            this.btnReset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnReset.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
-            // btnMin
-            // 
-            this.btnMin.Image = ((System.Drawing.Image)(resources.GetObject("btnMin.Image")));
-            this.btnMin.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnMin.Location = new System.Drawing.Point(472, 282);
-            this.btnMin.Name = "btnMin";
-            this.btnMin.Size = new System.Drawing.Size(104, 30);
-            this.btnMin.TabIndex = 5;
-            this.btnMin.Text = "Close";
-            this.btnMin.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnMin.UseVisualStyleBackColor = true;
-            this.btnMin.Click += new System.EventHandler(this.btnMin_Click);
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelEncoder,
             this.toolStripStatusLabelNetwrok});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 371);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 460);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(649, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(747, 30);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -270,50 +222,124 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // txtCardStatus
+            // txtStatus
             // 
-            this.txtCardStatus.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtCardStatus.ForeColor = System.Drawing.Color.Red;
-            this.txtCardStatus.Location = new System.Drawing.Point(334, 325);
-            this.txtCardStatus.Multiline = true;
-            this.txtCardStatus.Name = "txtCardStatus";
-            this.txtCardStatus.ReadOnly = true;
-            this.txtCardStatus.Size = new System.Drawing.Size(269, 31);
-            this.txtCardStatus.TabIndex = 6;
+            this.txtStatus.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtStatus.ForeColor = System.Drawing.Color.Red;
+            this.txtStatus.Location = new System.Drawing.Point(22, 35);
+            this.txtStatus.Multiline = true;
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ReadOnly = true;
+            this.txtStatus.Size = new System.Drawing.Size(227, 95);
+            this.txtStatus.TabIndex = 6;
             // 
-            // menuStrip1
+            // groupBox3
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(649, 24);
-            this.menuStrip1.TabIndex = 7;
-            this.menuStrip1.Text = "menuStrip1";
+            this.groupBox3.Controls.Add(this.txtStatus);
+            this.groupBox3.Location = new System.Drawing.Point(406, 258);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(269, 158);
+            this.groupBox3.TabIndex = 8;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Status";
             // 
-            // aboutToolStripMenuItem1
+            // toolStrip1
             // 
-            this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem1.Text = "About";
-            this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonTestEncoder,
+            this.toolStripSeparator1,
+            this.toolStripButtonSave,
+            this.toolStripButtonReset,
+            this.toolStripSeparator2,
+            this.toolStripButtonAbout,
+            this.toolStripButtonExit});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(747, 54);
+            this.toolStrip1.TabIndex = 9;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButtonTestEncoder
+            // 
+            this.toolStripButtonTestEncoder.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonTestEncoder.Image")));
+            this.toolStripButtonTestEncoder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonTestEncoder.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonTestEncoder.Name = "toolStripButtonTestEncoder";
+            this.toolStripButtonTestEncoder.Size = new System.Drawing.Size(79, 51);
+            this.toolStripButtonTestEncoder.Text = "Test Encoder";
+            this.toolStripButtonTestEncoder.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonTestEncoder.Click += new System.EventHandler(this.toolStripButtonTestEncoder_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 54);
+            // 
+            // toolStripButtonSave
+            // 
+            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
+            this.toolStripButtonSave.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSave.Name = "toolStripButtonSave";
+            this.toolStripButtonSave.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
+            this.toolStripButtonSave.Size = new System.Drawing.Size(76, 51);
+            this.toolStripButtonSave.Text = "Save";
+            this.toolStripButtonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
+            // 
+            // toolStripButtonReset
+            // 
+            this.toolStripButtonReset.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReset.Image")));
+            this.toolStripButtonReset.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReset.Name = "toolStripButtonReset";
+            this.toolStripButtonReset.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
+            this.toolStripButtonReset.Size = new System.Drawing.Size(79, 51);
+            this.toolStripButtonReset.Text = "Reset";
+            this.toolStripButtonReset.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonReset.Click += new System.EventHandler(this.toolStripButtonReset_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 54);
+            // 
+            // toolStripButtonAbout
+            // 
+            this.toolStripButtonAbout.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAbout.Image")));
+            this.toolStripButtonAbout.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAbout.Name = "toolStripButtonAbout";
+            this.toolStripButtonAbout.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
+            this.toolStripButtonAbout.Size = new System.Drawing.Size(79, 51);
+            this.toolStripButtonAbout.Text = "About";
+            this.toolStripButtonAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonAbout.Click += new System.EventHandler(this.toolStripButtonAbout_Click);
+            // 
+            // toolStripButtonExit
+            // 
+            this.toolStripButtonExit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonExit.Image")));
+            this.toolStripButtonExit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonExit.Name = "toolStripButtonExit";
+            this.toolStripButtonExit.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
+            this.toolStripButtonExit.Size = new System.Drawing.Size(76, 51);
+            this.toolStripButtonExit.Text = "Exit";
+            this.toolStripButtonExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonExit.Click += new System.EventHandler(this.toolStripButtonExit_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 401);
-            this.Controls.Add(this.txtCardStatus);
+            this.ClientSize = new System.Drawing.Size(747, 490);
+            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.btnTestEncoder);
-            this.Controls.Add(this.btnMin);
-            this.Controls.Add(this.btnReset);
-            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -328,8 +354,10 @@
             this.groupBox2.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -349,18 +377,21 @@
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btmTestLink;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnTestEncoder;
-        private System.Windows.Forms.Button btnReset;
-        private System.Windows.Forms.Button btnMin;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelEncoder;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelNetwrok;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.TextBox txtCardStatus;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
+        private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonTestEncoder;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSave;
+        private System.Windows.Forms.ToolStripButton toolStripButtonReset;
+        private System.Windows.Forms.ToolStripButton toolStripButtonExit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonAbout;
 
     }
 }

@@ -96,6 +96,10 @@ namespace InterfaceClient
                             continue;
                         }
                         
+                        string cardNo, err, hex;
+
+                        ShowCardStatus("");
+
                         switch(entity.Cmd)
                         {
                             case Command.IF:
@@ -108,35 +112,88 @@ namespace InterfaceClient
                                         "",
                                         ""));
                                 break;
-                            case Command.KD:  //delete card
-                                break;
-                            case Command.KR:  //issue card                 
-                                string result,cardNo,err;
-                                if (myEncoder.IssueCard(entity.Data,out cardNo,out err))
+                            case Command.KD:  //delete card 
+                                if (!myEncoder.DeleteCard(out cardNo, out err, out hex))
                                 {
-                                    result = "Success";
-                                    ShowCardStatus("");
-                                }
-                                else
-                                {
-                                    result = "Failure";
                                     ShowCardStatus(err);
                                 }
+
+                                /* key answer data struct
+                                 * data[0] key type
+                                 * data[1] result
+                                 * data[2] card no
+                                 * data[3] workstation
+                                 * data[4] date time
+                                 */
                                 BollenSocket.Send(
                                     clientSocket.NetStream,
                                     new SocketEntity(
-                                         Command.KA,
-                                         new string[] { result, cardNo, entity.Data[49],workstation,DateTime.Now.ToString()},
-                                         "",""
-                                        ));
+                                        Command.KA,
+                                            new string[] {"KD", hex, cardNo, workstation, DateTime.Now.ToString() },
+                                            "", ""
+                                ));
+                                break;
+                            case Command.KR:  //issue card                 
+                                if (!myEncoder.IssueCard(entity.Data,out cardNo, out err, out hex))
+                                {
+                                    ShowCardStatus(err);
+                                }
+
+                                /* key answer data struct
+                                 * data[0] key type
+                                 * data[1] result
+                                 * data[2] guid
+                                 * data[3] card no
+                                 * data[4] workstation
+                                 * data[5] data time
+                                 */
+                                BollenSocket.Send(
+                                    clientSocket.NetStream,
+                                    new SocketEntity(
+                                        Command.KA,
+                                            new string[] {"KR", hex, entity.Data[0]/*guid*/, cardNo, workstation, DateTime.Now.ToString() },
+                                            "", ""
+                                ));
                                 break;
                             case Command.KG: //read card
+                                string[] keys = myEncoder.ReadCard(entity.Data[0]/*auth*/, out err, out hex);
+                                if (keys == null)
+                                {
+                                    ShowCardStatus(err);
+                                }
 
+                                /* read card data struct
+                                 * data[0] Card No
+                                 * data[1] Building
+                                 * data[2] Room
+                                 * data[3] Common Doors
+                                 * data[4] Arrival
+                                 * data[5] Departure
+                                 */
+                                string key =
+                                    "CTGuest Card" + "|" +
+                                    "CN" + keys[0] + "|" +
+                                    "BD" + keys[1] + "|" +
+                                    "RN" + keys[2] + "|" +
+                                    "CD" + keys[3] + "|" +
+                                    "AD" + keys[4] + "|" +
+                                    "DD" + keys[5];
+
+                                /* key answer data struct
+                                 * data[0] key type
+                                 * data[1] result
+                                 */
+                                BollenSocket.Send(
+                                        clientSocket.NetStream,
+                                        new SocketEntity(
+                                            Command.KA,
+                                                new string[] {"KG", hex},
+                                                "", ""
+                                ));
                                 break;
                             default:
                                 break;
-                        }
-                        
+                        }          
                     }
                     catch
                     {
@@ -155,7 +212,7 @@ namespace InterfaceClient
             
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void SaveConfigure()
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             Dictionary<string,string> content = CheckKeyContent();
@@ -189,8 +246,10 @@ namespace InterfaceClient
             this.timer1.Enabled = true;
         }
 
-        private void btnTestEncoder_Click(object sender, EventArgs e)
+        private void TestEncoder()
         {
+            myEncoder.Disconnect();
+
             string err;
             if (!myEncoder.Connect(out err))
             {
@@ -198,7 +257,6 @@ namespace InterfaceClient
                 return;
             }
             SetEncoderStatus("Encoder connect successful.", Status.info);
-            myEncoder.Beep();
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -290,14 +348,14 @@ namespace InterfaceClient
         delegate void ShowCardStatusHandler(string text);
         private void ShowCardStatus(string text)
         {
-            if (this.txtCardStatus.InvokeRequired)
+            if (this.txtStatus.InvokeRequired)
             {
                 ShowCardStatusHandler d = new ShowCardStatusHandler(ShowCardStatus);
                 this.Invoke(d, new Object[] { text });
             }
             else
             {
-                this.txtCardStatus.Text = text;
+                this.txtStatus.Text = text;
             }
         }
 
@@ -341,10 +399,10 @@ namespace InterfaceClient
             this.txtKeyCoderName.ReadOnly = !edit;
             this.txtIp.ReadOnly = !edit;
             this.txtPort.ReadOnly = !edit;
-            this.btnSave.Enabled = edit;
+            this.toolStripButtonSave.Enabled = edit;
         }
 
-        private void btnReset_Click(object sender, EventArgs e)
+        private void Reset()
         {
             setEditable(true);
             this.timer1.Enabled = false;
@@ -362,7 +420,7 @@ namespace InterfaceClient
             Application.Exit();
         }
 
-        private void btnMin_Click(object sender, EventArgs e)
+        private void Exit()
         {
             exit = true;
             this.Close();
@@ -412,13 +470,33 @@ namespace InterfaceClient
             myEncoder.Disconnect();
         }
 
-        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void toolStripButtonTestEncoder_Click(object sender, EventArgs e)
         {
-            FrmAbout about = new FrmAbout();
-            about.ShowDialog();
+            TestEncoder();
         }
 
- 
+        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        {
+            SaveConfigure();
+        }
+
+        private void toolStripButtonReset_Click(object sender, EventArgs e)
+        {
+            Reset();
+        }
+
+        private void toolStripButtonExit_Click(object sender, EventArgs e)
+        {
+            Exit();
+        }
+
+        private void toolStripButtonAbout_Click(object sender, EventArgs e)
+        {
+            FrmAbout frmAbout = new FrmAbout();
+            frmAbout.ShowDialog();
+        }
+
+
     }
 
     class MyDictionary

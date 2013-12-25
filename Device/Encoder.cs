@@ -3,292 +3,155 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace Device
 {
-    public enum CCardType { Unknow,UL,M1}
     public class Encoder
     {
-        private int _icdev;
-        public int Icdev
-        {
-            get { return _icdev; }
-        }
-
-        private byte _mode;
-        public byte Mode
-        {
-            get { return _mode; }
-            set { _mode = value; }
-        }
-
-        private CCardType _cardType;
-        public CCardType Card_Type
-        {
-            get { return _cardType; }
-        }
-
         public Encoder()
         {
-            _icdev = -1;
-            _mode = 0;
+        }
+
+        private string IntToHex(int org)
+        {
+            return "0X" + Convert.ToString(org, 16);
+        }
+
+        private string Error(short code, out string hex)
+        {
+            hex = IntToHex(Math.Abs(code));
+
+            switch(code)
+            {
+                case 0:  return "";
+                case -1: return	"Interface error";
+                case -2: return	"Connect encoder failed";
+                case -3: return	"Register encoder failed";
+                case -4: return	"Buzzer mute";
+                case -5: return	"Not supported card type";
+                case -6: return	"Wrong card password";
+                case -7: return	"Wrong supplier password";
+                case -8: return	"Wrong card type";
+                case -9: return "Wrong authorization code";
+                default: return "Unknow";
+            }
         }
 
         public bool Connect(out string err)
         {
-            if ((_icdev = PInvoke.dc_init(100, 115200)) <= 0)
-            {
-                err = "Initialize the encoder failed.";
+            string hex = string.Empty;
+            if ((err = Error(PInvoke.dv_connect(1), out hex)) != string.Empty)
                 return false;
-            }
 
-            if (!IsRegEncoder())
-            {
-                err = "Register the encoder failed.";
-                return false;          
-            }
-
-            err = "";
             return true;
         }
 
         public bool Disconnect()
         {
-            if (PInvoke.dc_exit(_icdev) != 0)
+            if (PInvoke.dv_disconnect() != 0)
             {
                 return false;
             }
 
             return true;
-        }
+        }       
 
-        public bool IsRegEncoder()
+        public bool IssueCard(string[] data, out string preCardNo, out string err, out string hex)
         {
-            byte[] buffer = new byte[32];
-            if ((PInvoke.dc_srd_eeprom(_icdev, 0, 32, buffer)) != 0)
+            byte[] cardno = new byte[6];
+            if ((err = Error(PInvoke.dv_get_card_number(cardno),out hex)) != string.Empty)
             {
+                preCardNo = string.Empty;
                 return false;
             }
+                
+            preCardNo = Encoding.ASCII.GetString(cardno);
 
-            if (Encoding.ASCII.GetString(buffer).Substring(0,12) != "OBTWXY070501")
+            /* Data Struct
+             * data[0] Guid
+             * data[1] key count
+             * data[2] auth
+             * data[3] building
+             * data[4] room
+             * data[5] commdoors
+             * data[6] arrival
+             * data[7] departure
+             */
+            int cnt = Convert.ToInt32(data[1]);
+            int i = 0;
+            while (i < cnt)
             {
-                return false;
-            }
+                if (PInvoke.dv_check_card() < 0)
+                    continue;
 
-            return true;
-        }
-
-        public void Beep()
-        {
-            PInvoke.dc_beep(_icdev, 10);
-        }
-
-        public bool CheckCard()
-        {  
-            //****** modify by bollen 2013-06-21
-            uint tagType = 0;
-            if (PInvoke.dc_request(_icdev, _mode, ref tagType) != 0)
-                return false;
-
-            switch (tagType)
-            {
-                case 4:
-                    _cardType =  CCardType.M1;
-                    break;
-                case 68:
-                    _cardType =  CCardType.UL;
-                    break;
-                default:
-                    _cardType =  CCardType.Unknow;
-                    break;
-            }
-
-            if (_cardType == CCardType.Unknow)
-                return false;
-
-            //****** modify by bollen 2013-06-21
-
-            byte[] snr = new byte[8];
-            if ((PInvoke.dc_card_double(_icdev, _mode, snr)) != 0)
-                return false;       
-
-            //****** modify by bollen 2013-06-21
-            if (_cardType ==  CCardType.M1)
-            {
-                byte sector = 13;
-                string hexkey = "100000000000";
-                if (PInvoke.dc_load_key_hex(_icdev, 0, sector, hexkey) != 0)
+                if ((err = Error(PInvoke.dv_write_card(
+                                    data[2],
+                                    data[3],
+                                    data[4],
+                                    data[5],
+                                    data[6],
+                                    data[7]
+                                ), out hex)) != string.Empty)
                     return false;
 
-                if (PInvoke.dc_authentication(_icdev, 0, sector) != 0)
-                    return false;
+                i++;
             }
-            //****** modify by bollen 2013-06-21
 
             return true;
         }
 
-        public bool VerifyCard(out string cardNo,out string err)
+        public string[] ReadCard(string auth, out string err, out string hex)
         {
-            cardNo = string.Empty;
-            if (!CheckCard())
-            {
-                err = "Check the card failed.";
-                return false;
-            }
-      
-            string RD_Data = string.Empty;
-            byte[] data = new byte[32];
+            byte[] cardno = new byte[6];
+            byte[] building = new byte[2];
+            byte[] room = new byte[4];
+            byte[] commdoors = new byte[3];
+            byte[] arrival = new byte[19];
+            byte[] departure = new byte[19];
+            if ((err = Error(PInvoke.dv_read_card(
+                                auth, 
+                                cardno, 
+                                building, 
+                                room, 
+                                commdoors, 
+                                arrival, 
+                                departure
+                             ),out hex)) != string.Empty)
+                return null;
 
-            if (_cardType ==  CCardType.UL)
-            {          
-                int i = 4;
-                while (i < 16)
-                {
-                    if (PInvoke.dc_read_hex(_icdev, (byte)i, data) != 0)
-                    {
-                        err = "Read data failed.";
-                        return false;
-                    }
+            /* data struct
+             * data[0] Card No
+             * data[1] Building
+             * data[2] Room
+             * data[3] Common Doors
+             * data[4] Arrival
+             * data[5] Departure
+             */
+            string[] keys = new string[6];
+            keys[0] = Encoding.ASCII.GetString(cardno);
+            keys[1] = Encoding.ASCII.GetString(building);
+            keys[2] = Encoding.ASCII.GetString(room);
+            keys[3] = Encoding.ASCII.GetString(commdoors);
+            keys[4] = Encoding.ASCII.GetString(arrival);
+            keys[5] = Encoding.ASCII.GetString(departure);
 
-                    RD_Data = RD_Data + Encoding.ASCII.GetString(data);
+            return keys;
+        }
 
-                    i = i + 4;
-                }
-            }
-            else if (_cardType ==  CCardType.M1)
+        public bool DeleteCard(out string preCardNo, out string err, out string hex)
+        {
+            byte[] cardno = new byte[6];
+            if ((err = Error(PInvoke.dv_get_card_number(cardno), out hex)) != string.Empty)
             {
-                int i = 52;
-                while (i <= 54)
-                {
-                    if (PInvoke.dc_read_hex(_icdev, (byte)i, data) != 0)
-                    {
-                        err = "Read data failed.";
-                        return false;
-                    }
-
-                    RD_Data = RD_Data + Encoding.ASCII.GetString(data);
-
-                    i = i + 1;
-                }
-            }
-  
-
-            string CardType = RD_Data.Substring(6,2);
-
-            if (CardType == "0A")     //设置卡
-            {
-                cardNo = RD_Data.Substring(32,6);    
-            }
-            else if (CardType == "0B")  //时钟卡
-            {
-                cardNo = RD_Data.Substring(24,6);  
-            }
-            else if (CardType == "0C")  //总控、应急卡、封闭卡
-            {
-                cardNo = RD_Data.Substring(8, 6);
-            }
-            else if (CardType == "0D" || CardType == "0E")
-            {
-                cardNo = RD_Data.Substring(18, 6);
-            }
-            else
-            {
-                cardNo = string.Empty;
-            }
-          
-            if (RD_Data.Substring(88, 8) != "01010205")
-            {
-                err = "Card password error, please contact suppliers.";
+                preCardNo = string.Empty;
                 return false;
             }
 
-            err = "";
+            preCardNo = Encoding.ASCII.GetString(cardno);
+
+            if ((err = Error(PInvoke.dv_delete_card(),out hex)) != string.Empty)
+                return false;
+
             return true;
-        }
-
-        public bool IssueCard(string[] data, out string preCardNo, out string err)
-        {
-            string cardNo,error;
-
-            if (!VerifyCard(out cardNo,out error))
-            {
-                preCardNo = cardNo;
-                err = error;
-                return false;
-            }
-
-            preCardNo = cardNo;
-
-            try
-            {
-                for (int cnt = 1; cnt <= Convert.ToInt32(data[48]); cnt++)
-                {
-                    string buffer = string.Empty;
-                    byte addr;
-
-                    if (_cardType == CCardType.UL)//UL Write data
-                    {
-                        for (int i = 1; i < 13; i++)
-                        {
-                            buffer = data[i * 4 - 4] + data[i * 4 - 3] + data[i * 4 - 2] + data[i * 4 - 1] + "000000000000000000000000";
-                            addr = (byte)(i + 3);
-                            if (PInvoke.dc_write_hex(_icdev, addr, buffer) != 0)
-                            {
-                                err = "Write data error.";
-                                return false;
-                            }
-                        }
-                    }
-                    else if (_cardType == CCardType.M1) //M1 write data
-                    {
-                        for (int i = 1; i < 4; i++)
-                        {
-
-                            buffer = string.Empty;
-
-                            for (int j = 16; j > 0; j--)
-                            {
-                                buffer = buffer + data[i * 16 - j];
-                            }
-
-                            addr = (byte)(i + 51);
-                            if (PInvoke.dc_write_hex(_icdev, addr, buffer) != 0)
-                            {
-                                err = "Write data error.";
-                                return false;
-                            }
-                        }
-                    }
-
-                    Beep();
-                }
-            }
-            catch(Exception ex)
-            {
-                err = ex.Message;
-                return false;
-            }
-
-            err = "";
-            return true;
-        }
-
-        public string[] ReadCard(out string err)
-        {
-            err = "";
-            return null;
-        }
-
-        public bool DeleteCard(out string err)
-        {
-            err = "";
-            return false;
-        }
-
-        private string IntToHex(int org)
-        {
-            return Convert.ToString(org, 16);
         }
     }
 }

@@ -8,26 +8,40 @@ namespace Device
 {
     class PInvoke
     {  
-        [DllImport("dcrf32.dll",SetLastError=true)]
-        public static extern int dc_init(Int16 port, Int32 baud);
-        [DllImport("dcrf32.dll",SetLastError=true)]
-        public static extern short dc_exit(int icdev);
-        [DllImport("dcrf32.dll",SetLastError=true)]
-        public static extern short dc_beep(int icdev, uint _Msec);
-        [DllImport("dcrf32.dll",SetLastError = true,CallingConvention=CallingConvention.StdCall)]
-        public static extern short dc_card_double(int icdev, byte mode, byte[] snr);
-        [DllImport("dcrf32.dll",SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dc_read_hex(int icdev, byte addr, byte[] data);
-        [DllImport("dcrf32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dc_srd_eeprom(int icdev,int offset,int length,byte[] buffer);
-        [DllImport("dcrf32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dc_write_hex(int icdev,byte addr,[In] string data);
-        [DllImport("dcrf32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dc_request(int icdev, byte mode, ref uint tagType);
-        [DllImport("dcrf32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dc_load_key_hex(int icdev, byte mode, byte secNr, string key);
-        [DllImport("dcrf32.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dc_authentication(int icdev, byte mode, byte secNr);
+        [DllImport("CLock.dll", SetLastError=true, CallingConvention=CallingConvention.StdCall)]
+        public static extern short dv_connect(short beep);
 
+        [DllImport("CLock.dll", SetLastError=true, CallingConvention=CallingConvention.StdCall)]
+        public static extern short dv_disconnect();
+
+        [DllImport("CLock.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        public static extern short dv_check_card();
+
+        [DllImport("CLock.dll", SetLastError=true, CallingConvention=CallingConvention.StdCall)]
+        public static extern short dv_read_card(
+            string auth,
+            byte[] cardno,
+            byte[] building, 
+            byte[] room,
+            byte[] commdoors,
+            byte[] arrival, 
+            byte[] departure
+        );
+
+        [DllImport("CLock.dll", SetLastError=true, CallingConvention=CallingConvention.StdCall)]
+        public static extern short dv_write_card(
+            string auth, 
+			string building,
+			string room,
+			string commdoors,
+			string arrival,
+			string departure
+        );
+
+        [DllImport("CLock.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        public static extern short dv_delete_card();
+
+        [DllImport("CLock.dll", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        public static extern short dv_get_card_number(byte[] cardno);
     }
 }
